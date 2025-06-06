@@ -124,9 +124,77 @@ print(find_villain(crowd, villain))
 # Problem 9: Odd
 # Write a function get_odds() that takes in a list of integers nums and returns a new list containing all the odd numbers in nums.
 def get_odds(nums):
+    result = []
+    for i in range(len(nums)):
+        if (nums[i] % 2)!=0:
+            result.append(nums[i])
+    return result
 
 nums = [1, 2, 3, 4]
-get_odds(nums)
+print(get_odds(nums))
 
 nums = [2, 4, 6, 8]
-get_odds(nums)
+print(get_odds(nums))
+
+# Problem 10: Up and Down
+# Write a function up_and_down() that accepts a list of integers lst as a parameter. 
+# The function should return the number of odd numbers minus the number of even numbers in the list.
+def up_and_down(lst):
+    even_count = 0
+    odd_count = 0
+    for i in lst:
+        if i%2 == 0:
+            even_count+=1
+        else:
+            odd_count+=1
+    result = odd_count-even_count
+    return result
+
+lst = [1, 2, 3]
+print(up_and_down(lst))
+
+lst = [1, 3, 5]
+print(up_and_down(lst))
+
+lst = [2, 4, 10, 2]
+print(up_and_down(lst))
+
+# Problem 11: Running Sum
+# Write a function running_sum() that accepts a list of integers superhero_stats representing the 
+# number of crimes Batman has stopped each month in Gotham City. The function should modify the 
+# list to return the running sum such that superhero_stats[i] = sum(superhero_stats[0]...superhero_stats[i]). 
+# You must modify the list in place; you may not create any new lists as part of your solution.
+def running_sum(superhero_stats):
+    for i in range(1, len(superhero_stats)):
+        superhero_stats[i] += superhero_stats[i-1]
+    return superhero_stats
+    
+
+superhero_stats = [1, 2, 3, 4]
+print(running_sum(superhero_stats))
+
+superhero_stats = [1, 1, 1, 1, 1]
+print(running_sum(superhero_stats))
+
+superhero_stats = [3, 1, 2, 10, 1]
+print(running_sum(superhero_stats))
+
+# Problem 12: Shuffle
+# Write a function shuffle() that accepts a list cards of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn]. 
+# Return the list in the form [x1,y1,x2,y2,...,xn,yn].
+def shuffle(cards):
+    result = []
+    n = len(cards) // 2
+    for i in range(n):
+        result.append(cards[i])
+        result.append(cards[i+n])
+    return result
+
+cards = ['Joker', 'Queen', 2, 3, 'Ace', 7]
+print(shuffle(cards))
+
+cards = [9, 2, 3, 'Joker', 'Joker', 3, 2, 9]
+print(shuffle(cards))
+
+cards = [10, 10, 2, 2]
+print(shuffle(cards))
