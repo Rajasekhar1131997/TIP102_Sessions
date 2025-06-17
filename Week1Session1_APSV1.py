@@ -86,3 +86,26 @@ print(non_decreasing(nums))
 # A clue x is considered missing if x is in the range [lower, upper] and x is not in clues.
 # Return the shortest sorted list of ranges that exactly covers all the missing numbers. 
 # That is, no element of clues is included in any of the ranges, and each missing number is covered by one of the ranges.
+def find_missing_clues(clues, lower, upper):
+    result = []
+    clues = sorted(clues)
+    previous = lower-1
+    for num in clues+[upper+1]:
+        if  num - previous >=2:
+            start = previous+1
+            end = num - 1
+            result.append([start,end])
+        previous = num
+    return result
+
+
+clues = [0, 1, 3, 50, 75]
+lower = 0
+upper = 99
+print(find_missing_clues(clues, lower, upper))
+
+clues = [-1]
+lower = -1
+upper = -1
+print(find_missing_clues(clues, lower, upper))
+
