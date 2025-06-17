@@ -109,3 +109,90 @@ lower = -1
 upper = -1
 print(find_missing_clues(clues, lower, upper))
 
+# Problem 6: Vegetable Harvest
+# Rabbit is collecting carrots from his garden to make a feast for Pooh and friends. 
+# Write a function harvest() that accepts a 2D n x m matrix vegetable_patch and returns 
+# the number of of carrots that are ready to harvest in the vegetable patch. 
+# A carrot is ready to harvest if vegetable_patch[i][j] has value 'c'.
+# Assume n = len(vegetable_patch) and m = len(vegetable_patch[0]). 0 <= i < n and 0 <= j < m.
+def harvest(vegetable_patch):
+    n = len(vegetable_patch)
+    count = 0
+    for i in range(n):
+        m = len(vegetable_patch[i])
+        for j in range(m):
+            if vegetable_patch[i][j] == 'c':
+                count +=1
+    return count
+
+vegetable_patch = [
+	['x', 'c', 'x'],
+	['x', 'x', 'x'],
+	['x', 'c', 'c'],
+	['c', 'c', 'c']
+]
+print(harvest(vegetable_patch))
+
+# Problem 7: Eeyore's House
+# Eeyore has collected two piles of sticks to rebuild his house and needs to choose pairs of sticks whose 
+# lengths are the right proportion. Write a function good_pairs() that accepts two integer arrays pile1 
+# and pile2 where each integer represents the length of a stick. The function also accepts a positive integer k. 
+# The function should return the number of good pairs.
+# A pair (i, j) is called good if pile1[i] is divisible by pile2[j] * k. 
+# Assume 0 <= i <= len(pile1) - 1 and 0 <= j <= len(pile2) - 1.
+def good_pairs(pile1, pile2, k):
+    p1 = len(pile1)
+    p2 = len(pile2)
+    count = 0
+    for i in range(p1):
+        for j in range(p2):
+            if (pile1[i] % (pile2[j] * k) == 0):
+                count +=1
+    return count
+
+pile1 = [1, 3, 4]
+pile2 = [1, 3, 4]
+k = 1
+print(good_pairs(pile1, pile2, k))
+
+pile1 = [1, 2, 4, 12]
+pile2 = [2, 4]
+k = 3
+print(good_pairs(pile1, pile2, k))
+
+# Problem 8: Local Maximums
+# Write a function local_maximums() that accepts an n x n integer matrix grid and returns 
+# an integer matrix local_maxes of size (n - 2) x (n - 2) such that:
+# local_maxes[i][j] is equal to the largest value of the 3 x 3 matrix in grid centered around row i + 1 and column j + 1.
+# In other words, we want to find the largest value in every contiguous 3 x 3 matrix in grid.
+def local_maximums(grid):
+    n = len(grid)
+    local_maxes = []
+    for i in range(n-2):
+        row = []
+        for j in range(n-2):
+            max_val = max(
+                grid[i][j],grid[i][j+1],grid[i][j+2],
+                grid[i+1][j], grid[i+1][j+1],grid[i+1][j+2],
+                grid[i+2][j],grid[i+2][j+1],grid[i+2][j+2]
+            )
+            row.append(max_val)
+        local_maxes.append(row)
+    return local_maxes
+
+grid = [
+	[9, 9, 8, 1],
+	[5, 6, 2, 6],
+	[8, 2, 6, 4],
+	[6, 2, 2, 2]
+]
+print(local_maximums(grid))
+
+grid = [
+	[1, 1, 1, 1, 1],
+	[1, 1, 1, 1, 1],
+	[1, 1, 2, 1, 1],
+	[1, 1, 1, 1, 1],
+	[1, 1, 1, 1, 1]
+]
+print(local_maximums(grid))
