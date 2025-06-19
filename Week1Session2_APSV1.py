@@ -110,10 +110,44 @@ Return the maximum amount of honey a container can store.
 Notice that you may not slant the container.
 """
 def most_honey(height):
-    
+    result = 0
+    left, right = 0, len(height) - 1
+    while left < right:
+        area = (right-left) * min(height[left],height[right])
+        result = max(result,area)
+
+        if height[left] < height[right]:
+            left += 1
+        elif height[left] > height[right]:
+            right -= 1
+        else:
+            left +=1
+    return result
+
 
 height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
 print(most_honey(height))
 
 height = [1, 1]
 print(most_honey(height))
+
+"""
+Problem 6: Merge Intervals
+Write a function merge_intervals() that accepts an array of intervals where intervals[i] = [starti, endi], 
+merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+"""
+def merge_intervals(intervals):
+    intervals.sort(key = lambda x:x[0])
+    merged = []
+    for a, b in intervals:
+        if not merged or a > merged[-1][1]:
+            merged.append([a,b])
+        else:
+            merged[-1][1] = max(merged[-1][1],b)
+    return merged
+
+intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
+print(merge_intervals(intervals))
+
+intervals = [[1, 4], [4, 5]]
+print(merge_intervals(intervals))
