@@ -351,8 +351,6 @@ def find_stage_arrangement_difference(s, t):
     :rtype: int
     """
 
-
-
 s1 = ["Alice", "Bob", "Charlie"]
 t1 = ["Bob", "Alice", "Charlie"]
 s2 = ["Alice", "Bob", "Charlie", "David", "Eve"]
@@ -453,7 +451,7 @@ def sort_performers(performer_names, performance_times):
         result[performer] = time
 
     new_result = sorted(result.items(), key=lambda item : item[1], reverse= True)
-    
+
     performer, time = zip(*new_result)
     return list(performer)
 
