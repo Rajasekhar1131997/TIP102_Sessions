@@ -14,7 +14,7 @@
 # 4. if it finds an closing tag, it should check whether the stack is empty or not and we also need to make sure
 # its of the same type
 # 5. if it is of same tag, it should then pop from the stack
-# 6. if not, the tags are not properly closed and shoudl return false
+# 6. if not, the tags are not properly closed and should return false
 # 7. once, we loop through all the characters in the string, and also we need make sure that the stack is empty
 # then we return true, otherwise false.
 
