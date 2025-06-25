@@ -35,6 +35,7 @@ def is_valid_post_format(posts):
     else:
         return False
 
+print("--------Problem 1---------")
 print(is_valid_post_format("()"))
 print(is_valid_post_format("()[]{}")) 
 print(is_valid_post_format("(]"))
@@ -70,6 +71,7 @@ def reverse_comments_queue(comments):
         res.append(stack.pop())
     return res
 
+print("--------Problem 2---------")
 print(reverse_comments_queue(["Great post!", "Love it!", "Thanks for sharing."]))
 
 print(reverse_comments_queue(["First!", "Interesting read.", "Well written."]))
@@ -86,6 +88,159 @@ print(reverse_comments_queue(["First!", "Interesting read.", "Well written."]))
 # edge case: Empty String or bunch of spaces
 # Plan
 # initialize left and right pointers
-# 
 def is_symmetrical_title(title):
-  pass
+    title = title.lower()
+    title = title.replace(" ","")
+    left = 0
+    right = len(title) - 1
+    while left < right:
+        if title[left] != title[right]:
+            return False
+        else:
+            left += 1
+            right -= 1
+    return True
+    
+print("--------Problem 3---------")
+print(is_symmetrical_title("A Santa at NASA"))
+print(is_symmetrical_title("Social Media")) 
+
+"""
+Problem 4: Engagement Boost
+You track your daily engagement rates as a list of integers, sorted in non-decreasing order. 
+To analyze the impact of certain strategies, you decide to square each engagement rate and then sort the results in non-decreasing order.
+Given an integer array engagements sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
+Your Task:
+Read through the existing solution and add comments so that everyone in your pod understands how it works.
+Modify the solution below to use the two-pointer technique.
+"""
+def engagement_boost(engagements):
+    squared_engagements = [] # intializing an empty list
+    
+    for i in range(len(engagements)): # looping through each value from engagements list
+        squared_engagement = engagements[i] * engagements[i] #calulating the square of each value
+        squared_engagements.append((squared_engagement, i)) # appending the squared value into squared_engagements list
+    
+    squared_engagements.sort(reverse=True) # with the help of sort() function, sorting the list in descending order
+    
+    result = [0] * len(engagements) #creating an empty list of 0's the same length of engagements list
+    position = len(engagements) - 1 #initializing a pointer at the end of enagagements list
+    
+    for square, original_index in squared_engagements: #looping through each value and index from squared_engagements list
+        result[position] = square #assigning the squared value to the result list
+        position -= 1 # moving the position to the left
+    
+    return result #returning the result list
+
+print("--------Problem 4---------")
+print(engagement_boost([-4, -1, 0, 3, 10]))
+print(engagement_boost([-7, -3, 2, 3, 11]))
+
+"""
+Problem 4: Engagement Boost (Two-pointer)
+You track your daily engagement rates as a list of integers, sorted in non-decreasing order. 
+To analyze the impact of certain strategies, you decide to square each engagement rate and then sort the results in non-decreasing order.
+Given an integer array engagements sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
+Your Task:
+Read through the existing solution and add comments so that everyone in your pod understands how it works.
+Modify the solution below to use the two-pointer technique.
+"""
+def engagement_boost(engagements):
+    result = [0] * len(engagements)
+    left = 0
+    right = len(engagements) - 1
+    index = len(engagements) - 1
+    
+    while left <= right:
+        left_square = engagements[left] * engagements[left]
+        right_square = engagements[right] * engagements[right]
+        
+        if left_square < right_square:
+            result[index] = right_square
+            right -= 1
+        else:
+            result[index] = left_square
+            left += 1
+            
+        index -= 1
+    return result
+
+print("--------Problem 4 (Two Pointer Approach)---------")
+print(engagement_boost([-4, -1, 0, 3, 10]))
+print(engagement_boost([-7, -3, 2, 3, 11]))
+
+"""
+Problem 5: Content Cleaner
+You want to make sure your posts are clean and professional. Given a string post of lowercase and uppercase English letters, 
+you want to remove any pairs of adjacent characters where one is the lowercase version of a letter and the 
+other is the uppercase version of the same letter. Keep removing such pairs until the post is clean.
+A clean post does not have two adjacent characters post[i] and post[i + 1] where:
+post[i] is a lowercase letter and post[i + 1] is the same letter in uppercase or vice-versa.
+Return the clean post.
+Note that an empty string is also considered clean.
+"""
+def clean_post(post):
+    stack = []
+    if not post:
+        return ""
+    if len(post) == 1:
+        return post
+    for char in post:
+        if stack and stack[-1].lower() == char.lower() and stack[-1] != char:
+            stack.pop()
+        else:
+            stack.append(char)
+    return "".join(stack)    
+
+print("--------Problem 5---------")
+print(clean_post("poOost")) 
+print(clean_post("abBAcC")) 
+print(clean_post("s")) 
+
+"""
+Problem 6: Post Editor
+You want to add a creative twist to your posts by reversing the order of characters in each word within your post while still 
+preserving whitespace and the initial word order. Given a string post, use a queue to reverse the order of characters in 
+each word within the sentence.
+"""
+from collections import deque
+def edit_post(post):
+    result = []
+    q = deque()
+    for char in post:
+        if char != " ":
+            q.append(char)
+        else:
+            while q:
+                result.append(q.pop())
+            result.append(char)
+    while q:
+        result.append(q.pop())
+    return "".join(result)
+
+print("--------Problem 6---------")
+print(edit_post("Boost your engagement with these tips")) 
+print(edit_post("Check out my latest vlog"))
+
+"""
+Problem 7: Post Compare
+You often draft your posts and edit them before publishing. Given two draft strings draft1 and draft2, 
+return true if they are equal when both are typed into empty text editors. '#' means a backspace character.
+Note that after backspacing an empty text, the text will remain empty.
+"""
+def post_compare(draft1, draft2):
+    return helper(draft1) == helper(draft2)
+
+def helper(draft1):
+    stack = []
+    for char in draft1:
+        if char == "#":
+            stack.pop()
+        else:
+            stack.append(char)
+    return "".join(stack)
+
+print("--------Problem 7---------")
+print(post_compare("ab#c", "ad#c"))
+print(post_compare("ab##", "c#d#")) 
+print(post_compare("a#c", "b"))
