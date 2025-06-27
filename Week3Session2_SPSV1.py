@@ -157,8 +157,56 @@ If there is no such event, then the answer for that event is -1.
 Return an array ans of length schedule1.length such that ans[i] is the next greater event's popularity score as described above.
 """
 def next_greater_event(schedule1, schedule2):
-    
+    schedule2_pos = {}
+    for key, value in enumerate(schedule2):
+        schedule2_pos[value] = key
+    print(schedule2_pos)
+    answer = []
+    n = len(schedule2)
+    for i in schedule1:
+        j = schedule2_pos[i]
+        found = -1
+        
+        for k in range(j+1, n):
+            if schedule2[k] > i:
+                found = schedule2[k]
+                break
+        answer.append(found)
+    return answer
+
 
 print("--------Problem 6---------")
 print(next_greater_event([4, 1, 2], [1, 3, 4, 2])) 
-print(next_greater_event([2, 4], [1, 2, 3, 4])) 
+print(next_greater_event([2, 4], [1, 2, 3, 4]))
+
+
+"""
+Problem 7: Sort Performances by Type
+You are organizing a cultural festival and have a list of performances represented by an integer array performances. 
+Each performance is classified as either an even type (e.g., dance, music) or an odd type (e.g., drama, poetry).
+Your task is to rearrange the performances so that all the even-type performances appear at the beginning of the array, 
+followed by all the odd-type performances.
+Return any array that satisfies this condition.
+"""
+def sort_performances_by_type(performances):
+    if not performances:
+        return []
+    if len(performances) == 1:
+        return performances
+    left = 0
+    right = len(performances) - 1
+    while left < right:
+        if performances[left] % 2 == 0:
+            left += 1
+        elif performances[right] % 2 == 1:
+            right -= 1
+        else:
+            performances[left], performances[right] = performances[right], performances[left]
+            left += 1
+            right -= 1
+    return performances
+
+print("--------Problem 7---------")
+print(sort_performances_by_type([3, 1, 2, 4]))
+print(sort_performances_by_type([3, 2, 1, 0, 5, 6, 8]))
+print(sort_performances_by_type([0]))
