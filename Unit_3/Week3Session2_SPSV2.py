@@ -170,9 +170,56 @@ in the stack (i = 0 is the top of the stack) and explorers[j] is the preference 
 (j = 0 is the front of the queue). Return the number of explorers that are unable to gather their preferred supplies.
 """
 def count_explorers(explorers, supplies):
-  pass
+    need_0 = explorers.count(0)
+    need_1 = explorers.count(1)
+    for s in supplies:
+        if s == 0 and need_0 > 0:
+            need_0 -= 1
+        elif s ==1 and need_1 > 0:
+            need_1 -= 1
+        else:
+            break
+    return need_0 + need_1
 
 
 print("--------Problem 5---------")
 print(count_explorers([1, 1, 0, 0], [0, 1, 0, 1]))  
 print(count_explorers([1, 1, 1, 0, 0, 1], [1, 0, 0, 0, 1, 1]))
+
+"""
+Problem 6: Count Balanced Terrain Subsections
+During your global expedition, you are analyzing a binary terrain string, terrain, where 0 represents a valley and 1 represents a hill. 
+You need to count the number of non-empty balanced subsections in the terrain. A balanced subsection is defined as a 
+contiguous segment of the terrain where an equal number of valleys (0s) and hills (1s) appear, and all the 0s and 1s are grouped consecutively.
+Your task is to return the total number of these balanced subsections. Note that subsections that occur multiple times 
+should be counted each time they appear.
+"""
+def count_balanced_terrain_subsections(terrain):
+    return 0
+
+
+print("--------Problem 6---------")
+print(count_balanced_terrain_subsections("00110011")) 
+print(count_balanced_terrain_subsections("10101"))
+
+
+"""
+Problem 7: Check if a Signal Occurs as a Prefix in Any Transmission
+During your global expedition, you are monitoring various transmissions, each consisting of some signals separated by a single space. 
+You are given a searchSignal and need to check if it occurs as a prefix to any signal in a transmission.
+Return the index of the signal in the transmission (1-indexed) where searchSignal is a prefix of this signal. 
+If searchSignal is a prefix of more than one signal, return the index of the first signal (minimum index). 
+If there is no such signal, return -1.
+A prefix of a string s is any leading contiguous substring of s.
+"""
+def is_prefix_of_signal(transmission, searchSignal):
+    new_transmission = transmission.split(" ")
+    for i, signal in enumerate(new_transmission):
+        if signal.startswith(searchSignal):
+            return i
+    return -1
+
+print("--------Problem 7---------")
+print(is_prefix_of_signal("i love eating burger", "burg")) 
+print(is_prefix_of_signal("this problem is an easy problem", "pro")) 
+print(is_prefix_of_signal("i am tired", "you"))
