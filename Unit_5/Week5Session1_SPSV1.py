@@ -238,6 +238,7 @@ print(tommy.next) #None
 Problem 11: Saharah
 Using the linked list from Problem 10, remove the tom_nook node and add in a node saharah with value "Saharah" to the end of the list 
 so that the resulting list is timmy -> tommy -> saharah.
+previously it was tom_nook -> timmy -> tommy
 """
 head = tom_nook.next
 tom_nook.next = None
