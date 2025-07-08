@@ -57,6 +57,7 @@ def print_linked_list(head):
         print(current.value, end=" -> " if current.next else "\n")
         current = current.next
     
+    
 def add_first(head, task):
     return Node(task, head)
 
