@@ -242,3 +242,48 @@ A doubly linked list solves this problem! Instead of just having a next attribut
 points to the Node before it. (E.g., A <-> B <-> C)
 Update the Node constructor below so that the code creates a doubly linked list with head <-> tail.
 """
+class DoubleNode:
+    def __init__(self, value, next = None, prev = None):
+        self.value = value
+        self.next = next
+        self.prev = prev
+
+head = DoubleNode("Isabelle")
+tail = DoubleNode("K.K. Slider")
+
+head.next = tail
+tail.prev = head
+
+print("--------Problem 9---------")
+print(head.value, "<->", head.next.value)
+print(tail.prev.value, "<->", tail.value)
+
+"""
+Problem 10: Print Backwards
+Write a function print_reverse() that takes in the tail of a doubly linked list as a parameter.
+It should print out the values of the linked list in reverse order, each separated by a space.
+"""
+def print_reverse(tail):
+    if tail is None:
+        return None
+    current = tail
+    first = True
+    while current:
+        if not first:
+            print(" ", end="")
+        print(current.value,end="")
+        first = False
+        current = current.prev
+    print()
+
+print("--------Problem 10---------")
+isabelle = DoubleNode("Isabelle")
+kk_slider = DoubleNode("K.K. Slider")
+saharah = DoubleNode("Saharah")
+isabelle.next = kk_slider
+kk_slider.next = saharah
+saharah.prev = kk_slider
+kk_slider.prev = isabelle
+
+# Linked List: Isabelle <-> K.K. Slider <-> Saharah
+print_reverse(saharah)
