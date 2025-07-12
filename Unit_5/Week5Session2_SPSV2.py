@@ -84,16 +84,80 @@ in the linked list and return the head of the linked list. (You can assume head 
 Note: The "head" of a linked list is the first element in the linked list. It is equivalent to lst[0] of a normal list.
 """
 def add_second(head, val):
-    pass
+    new_node = Node(val,head.next)
+    head.next = new_node
+    return head
 
-
+print("--------Problem 3---------")
 original_list_head = Node("banana")
 second = Node("blue shell")
 third = Node("bullet bill")
 original_list_head.next = second
 second.next = third
 
-
 # Linked list: "banana" -> "blue shell" -> "bullet bill"
-new_list = add_second(head, "red shell")
+new_list = add_second(original_list_head, "red shell")
 print_linked_list(new_list)
+
+"""
+Problem 4: Increment Linked List Node Values
+Write a function increment_ll() that takes in the head of a linked list of integer values and returns the same list, 
+but with each node's value incremented by 1. Return the head of the list.
+"""
+def increment_ll(head):
+    if not head:
+        return None
+    current = head
+    while current:
+        current.value += 1
+        current = current.next
+    return head
+
+print("--------Problem 4---------")
+node_one = Node(5)
+node_two = Node(6)
+node_three = Node(7)
+node_one.next = node_two
+node_two.next = node_three
+
+# Input List: 5 -> 6 -> 7
+print_linked_list(increment_ll(node_one))
+
+"""
+Problem 5: Copy Linked List
+Write a function copy_ll() that takes in the head of a linked list and creates a complete copy of that linked list.
+The function should return the head of a new linked list which is identical to the given list in terms of its structure and contents, 
+but does not use any of the node objects from the original list.
+"""
+def copy_ll(head):
+    if not head:
+        return None
+    new_head = Node(head.value)
+    new_current = new_head
+    old_current = head.next
+    while old_current:
+        new_node = Node(old_current.value)
+        new_current.next = new_node
+        new_current = new_current.next
+        old_current = old_current.next
+    return new_head
+
+print("--------Problem 5---------")
+mario = Node("Mario")
+daisy = Node("Daisy")
+luigi = Node("Luigi")
+mario.next = daisy
+daisy.next = luigi
+
+# Linked List: Mario -> Daisy -> Luigi
+copy = copy_ll(mario)
+
+# Change original list -- should not affect the copy
+mario.value = "Original Mario"
+
+print_linked_list(mario)
+print_linked_list(copy)
+
+"""
+
+"""
