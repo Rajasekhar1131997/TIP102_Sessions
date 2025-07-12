@@ -21,12 +21,12 @@ class Player:
         count = len(self.race_outcomes)
         avg = total/count
 
-        result = 0
+        rank = 1
         for opponent in opponents:
             opponent_avg = sum(opponent.race_outcomes) / len(opponent.race_outcomes)
             if opponent_avg < avg:
-                result += 1
-        return result + 1
+                rank += 1
+        return rank
 
 print("--------Problem 1---------")
 player1 = Player("Mario", "Standard", [1, 2, 1, 1, 3])
@@ -72,7 +72,6 @@ shy_guy.next = link
 link.next = diddy_kong
 diddy_kong.next = toad
 toad.next = dry_bones
-
 
 print("Current List:")
 print_linked_list(shy_guy)
@@ -159,5 +158,184 @@ print_linked_list(mario)
 print_linked_list(copy)
 
 """
+Problem 6: Making the Cut
+Imagine that a linked list is used to track the order players finished in a race. Write a function top_n_finishers() 
+that takes in the head of a linked list and a non-negative integer n as parameters.
+The function should return a list of the values of the first n nodes.
+If n is greater than the length of the linked list, return a list of the values of all nodes in the linked list.
+"""
+def top_n_finishers(head, n):
+    if not head:
+        return None
+    result = []
+    count = 0
+    current = head
+    while current and count < n:
+        result.append(current.value)
+        current = current.next
+        count += 1
+    return result
+
+print("--------Problem 6---------")
+head = Node("Daisy", Node("Mario", Node("Toad", Node("Yoshi"))))
+
+# Linked List: Daisy -> Mario -> Toad -> Yoshi
+print(top_n_finishers(head, 3))
+
+# Linked List: Daisy -> Mario -> Toad -> Yoshi
+print(top_n_finishers(head, 5))
+
+# Linked List: Daisy -> Mario -> Toad -> Yoshi
+print(top_n_finishers(head, 1))
 
 """
+Problem 7: Remove Racer
+Write a function remove_racer() that takes in the head of a linked list and a value racer as parameters.
+The function should remove the first node with the value racer from the linked list and return the head of the modified list. 
+If racer is not in the list, return the head of the original list.
+"""
+def remove_racer(head, racer):
+    if not head:
+        return None
+    if head.value == racer:
+        return head.next
+    current = head
+    while current.next and current.next.value != racer:
+        current = current.next
+    if current.next:
+        current.next = current.next.next
+    return head
+
+print("--------Problem 7---------")
+head = Node("Daisy", Node("Mario", Node("Toad", Node("Mario"))))
+
+# Linked List: Daisy -> Mario -> Toad -> Mario
+print_linked_list(remove_racer(head, "Mario"))
+
+# Linked List: Daisy -> Mario -> Toad
+print_linked_list(remove_racer(head, "Yoshi"))
+
+"""
+Problem 8: Array to Linked List
+Write a function arr_to_ll() that accepts an array of Player instances arr and converts arr into a linked list. 
+The function should return the head of the linked list. If arr is empty, return None.
+A function print_linked_list() which accepts the head, or first element, of a linked list and prints the character attribute of 
+each Player in the linked list has also been provided for testing purposes.
+"""
+class Player:
+    def __init__(self, character, kart):
+        self.character = character
+        self.kart = kart
+        self.items = []
+
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+# For testing
+def print_linked_list1(head):
+    current = head
+    while current:
+        print(current.value.character, end=" -> " if current.next else "\n")
+        current = current.next
+
+def arr_to_ll(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    current = head
+    for player in arr[1:]:
+        current.next = Node(player)
+        current = current.next
+    return head
+
+print("--------Problem 8---------")
+mario = Player("Mario", "Mushmellow")
+luigi = Player("Luigi", "Standard LG")
+peach = Player("Peach", "Bumble V")
+
+print_linked_list1(arr_to_ll([mario, luigi, peach]))
+print_linked_list1(arr_to_ll([peach]))
+
+"""
+Problem 9: Convert Singly Linked List to Doubly Linked List
+One of the drawbacks of a linked list is that it's difficult to go backwards, because each Node only knows about the Node in front of it. 
+(E.g., A -> B -> C)
+A doubly linked list solves this problem! Instead of just having a next attribute, a doubly linked list also has a prev attribute 
+that points to the Node before it. (E.g., A <-> B <-> C)
+Update the code below to convert the singly linked list to a doubly linked list.
+Two functions, print_linked_list() and print_linked_list_backwards(), have been provided for testing purposes. 
+print_linked_list() accepts the head of a linked list and prints the values of each node in the list, 
+starting at the head and iterating in a forward direction. print_linked_list_backwards() accepts the tail of a linked list 
+and prints the values of each node in the list, starting at the tail and iterating in a backward direction.
+"""
+class Node:
+    def __init__(self, value, next=None, prev=None):
+        self.value = value
+        self.next = next
+        self.prev = prev
+
+koopa_troopa = Node("Koopa Troopa")
+toadette = Node("Toadette")
+waluigi = Node("Waluigi")
+koopa_troopa.next = toadette
+toadette.next = waluigi
+
+# Add code to convert to doubly linked list here --> manual way of converting nodes to doubly linked list
+# waluigi.prev = toadette
+# toadette.prev = koopa_troopa
+
+# method to convert singly linked list to doubly linked list
+def single_to_double(head):
+    prev_node = None
+    current = head
+    while current:
+        current.prev = prev_node
+        prev_node = current
+        current = current.next
+    return prev_node
+
+def print_linked_list_backwards(tail):
+    current = tail
+    while current:
+        print(current.value, end=" -> " if current.prev else "\n")
+        current = current.prev
+
+print("--------Problem 9---------")
+tail = single_to_double(koopa_troopa)
+print_linked_list(koopa_troopa)
+print_linked_list_backwards(tail)
+
+"""
+Problem 10: Find Length of Doubly Linked List from Any Node
+Write a function get_length() that takes in a node at an unknown position within a doubly linked list. 
+The function should return the length of the entire list.
+"""
+def get_length(node):
+    if node is None:
+        return 0
+    start = node
+    while start.prev:
+        start = start.prev
+    length = 0
+    current = start
+    while current:
+        length += 1
+        current = current.next
+    return length
+
+print("--------Problem 10---------")
+yoshi_falls = Node("Yoshi Falls")
+moo_moo_farm = Node("Moo Moo Farm")
+rainbow_road = Node("Rainbow Road")
+dk_mountain = Node("DK Mountain")
+yoshi_falls.next = moo_moo_farm
+moo_moo_farm.next = rainbow_road
+rainbow_road.next = dk_mountain
+dk_mountain.prev = rainbow_road
+rainbow_road.prev = moo_moo_farm
+moo_moo_farm.prev = yoshi_falls
+
+# List: Yoshi Falls <-> Moo Moo Farm <-> Rainbow Road <-> DK Mountain
+print(get_length(rainbow_road))
