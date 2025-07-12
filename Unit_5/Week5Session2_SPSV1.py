@@ -56,74 +56,6 @@ def print_linked_list(head):
     while current:
         print(current.value, end=" -> " if current.next else "\n")
         current = current.next
-    
-    
-def add_first(head, task):
-    return Node(task, head)
-
-def halve_list(head):
-    current = head
-    while current:
-        half = current.value / 2
-        current.value = int(half) if half.is_integer() else half
-        print(current.value, end=" -> " if current.next else "\n")
-        current = current.next
-
-def delete_tail(head):
-    if head is None:
-        return None
-    if head.next is None:
-        return None
-    current = head
-    while current.next.next != None:
-        current = current.next
-
-    current.next = None
-    return head
-
-def find_min(head):
-    if head is None:
-        return None
-    if head.next is None:
-        return None
-    min_value = head.value
-    current = head.next
-    while current:
-        if current.value < min_value:
-            min_value = current.value
-        current = current.next
-    return min_value
-
-def delete_item(head, item):
-    if head is None:
-        return None
-    if head.next is None:
-        return None
-    if head.value == item:
-        return head.next
-    prev = head
-    current = head.next
-    while current:
-        if current.value == item:
-            prev.next = current.next
-            return head
-        prev = current
-        current = current.next
-    return head
-
-def tail_to_head(head):
-    if head is None:
-        return head
-    if head.next is None:
-        return head
-    prev = None
-    current = head
-    while current.next:
-        prev = current
-        current = current.next
-    prev.next = None
-    current.next = head
-    return current
 
 print("--------Problem 2---------")
 kk_slider = Node("K.K. Slider")
@@ -143,6 +75,9 @@ in the head of a linked list and adds a new node to the front of the task list.
 The function should insert a new Node object with the value task as the new head of the linked list and return the new node.
 Note: The "head" of a linked list is the first element in the linked list. It is equivalent to lst[0] of a normal list.
 """
+def add_first(head, task):
+    return Node(task, head)
+
 print("--------Problem 3---------")
 task_1 = Node("shake tree")
 task_2 = Node("dig fossils")
@@ -158,6 +93,14 @@ Problem 4: Halve List
 Write a function halve_list() that accepts the head of a linked list whose values are integers and divides each value by two. 
 Return the head of the modified list.
 """
+def halve_list(head):
+    current = head
+    while current:
+        half = current.value / 2
+        current.value = int(half) if half.is_integer() else half
+        current = current.next
+    return head
+
 print("--------Problem 4---------")
 node_one = Node(5)
 node_two = Node(6)
@@ -170,9 +113,22 @@ print_linked_list(halve_list(node_one))
 
 """
 Problem 5: Remove Last
-Write a function delete_tail() that accepts the head of a linked list and removes the last node in the list. Return the head of the modified list.
+Write a function delete_tail() that accepts the head of a linked list and removes the last node in the list. 
+Return the head of the modified list.
 Note: The "tail" of a list is the last element in the linked list. It is equivalent to lst[-1] in a normal list.
 """
+def delete_tail(head):
+    if head is None:
+        return None
+    if head.next is None:
+        return None
+    current = head
+    while current.next.next != None:
+        current = current.next
+
+    current.next = None
+    return head
+
 print("--------Problem 5---------")
 butterfly = Node("Common Butterfly")
 ladybug = Node("Ladybug")
@@ -188,6 +144,19 @@ Problem 6: Find Minimum in Linked List
 Write a function find_min() that takes in the head of a linked list and returns the minimum value in the linked list. 
 You can assume the linked list will contain only numeric values.
 """
+def find_min(head):
+    if head is None:
+        return None
+    if head.next is None:
+        return None
+    min_value = head.value
+    current = head.next
+    while current:
+        if current.value < min_value:
+            min_value = current.value
+        current = current.next
+    return min_value
+
 print("--------Problem 6---------")
 head1 = Node(5, Node(6, Node(7, Node(8))))
 head2 = Node(8, Node(5, Node(6, Node(7))))
@@ -205,6 +174,23 @@ and a value item as parameters.
 The function should remove the first node it finds in the linked list with the value item and return the head of the modified list. 
 If no node can be found with the value item, return the list unchanged.
 """
+def delete_item(head, item):
+    if head is None:
+        return None
+    if head.next is None:
+        return None
+    if head.value == item:
+        return head.next
+    prev = head
+    current = head.next
+    while current:
+        if current.value == item:
+            prev.next = current.next
+            return head
+        prev = current
+        current = current.next
+    return head
+
 print("--------Problem 7---------")
 slingshot = Node("Slingshot")
 peaches = Node("Peaches")
@@ -222,6 +208,20 @@ print_linked_list(delete_item(slingshot, "Triceratops Torso"))
 Problem 8: Move Tail to Front of Linked List
 Write a function tail_to_head() that takes in the head of a linked list as a parameter and moves the tail of the linked list to the front.
 """
+def tail_to_head(head):
+    if head is None:
+        return head
+    if head.next is None:
+        return head
+    prev = None
+    current = head
+    while current.next:
+        prev = current
+        current = current.next
+    prev.next = None
+    current.next = head
+    return current
+
 print("--------Problem 8---------")
 daisy = Node("Daisy")
 mario = Node("Mario")
