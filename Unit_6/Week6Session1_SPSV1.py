@@ -154,14 +154,20 @@ def loop_length(playlist_head):
             return 0
       slow = playlist_head
       fast = playlist_head
-      count = 0
       while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
-            count += 1
+            if slow == fast:
+                  break
+      else:
+            return 0
+      length = 1
+      current = slow.next
+      while current != slow:
+            length += 1
+            current = current.next
+      return length
             
-            
-
 print("--------Problem 5---------")
 song1 = SongNode("Wein", "AL SHAMI")
 song2 = SongNode("Si Ai", "Tayna")
@@ -173,5 +179,50 @@ song3.next = song4
 song4.next = song2
 
 print(loop_length(song1))
-print("Time Complexity: ")
-print("Space Complexity: ")
+print("Time Complexity: O(n)")
+print("Space Complexity: O(1)")
+
+"""
+Problem 6: Volume Control
+You are working as an engineer normalizing volume levels on songs. Given the head of a singly linked list with integer values 
+song_audio representing volume levels at different points in a song, return the number of critical points. 
+A critical point is a local minima or maxima.
+The head and tail nodes are not considered critical points.
+A node is a local minima if both the next and previous elements are greater than the current element
+A node is a local maxima if both the next and previous elements are less than the current element
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for 
+why you believe your solution has the stated time and space complexity.
+"""
+class Node:
+	def __init__(self, value, next=None):
+		self.value = value
+		self.next = next
+
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
+
+def count_critical_points(song_audio):
+      if not song_audio or not song_audio.next or not song_audio.next.next:
+            return 0
+      prev = song_audio
+      current = song_audio.next
+      next_node = song_audio.next.next
+      count = 0
+      while next_node:
+            if (current.value > prev.value and current.value > next_node.value) or (current.value < prev.value and current.value < next_node.value):
+                  count += 1
+            prev = current
+            current = next_node
+            next_node = next_node.next
+      return count
+
+print("--------Problem 6---------")
+song_audio = Node(5, Node(3, Node(1, Node(2, Node(5, Node(1, Node(2)))))))
+
+print(count_critical_points(song_audio))
+print("Time Complexity: O(n)")
+print("Space Complexity: O(1)")
