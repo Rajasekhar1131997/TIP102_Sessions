@@ -118,5 +118,38 @@ print("Time Complexity: O(n)")
 print("Space Complexity: O(n)")
 
 """
+Problem 6: Checking the Knight's Path
+A knight is traveling along a path marked by stones, and each stone has a number on it. The knight must check if the numbers on 
+the stones form a strictly increasing sequence. Write a recursive function to determine if the sequence is strictly increasing.
+Evaluate the time complexity of your solution. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity.
+"""
+def is_increasing_path(path):
+    if not path:
+        return True
+    if len(path) == 1:
+        return True
+    if path[0] >= path[1]:
+        return False
+    return is_increasing_path(path[1:])
+
+print("--------Problem 6---------")
+print(is_increasing_path([1, 2, 3, 4, 5]))
+print(is_increasing_path([3, 5, 2, 8]))
+print("Time Complexity: O(n)")
+print("Space Complexity: O(n)")
 
 """
+Problem 7: Finding the Longest Winning Streak
+In the kingdom's grand tournament, knights compete in a series of challenges. A knight's performance in the challenge is represented 
+by a string challenges, where a success is represented by an S and each other outcome (like a draw or loss) is represented by an "O". 
+Write a recursive function to find the length of the longest consecutive streak of successful challenges ("S").
+Evaluate the time complexity of your solution. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity.
+"""
+def longest_streak(frames, current_length=0, max_length=0):
+    pass
+
+print("--------Problem 7---------")
+print(longest_streak("SSOSSS"))
+print(longest_streak("SOSOSOSO"))
