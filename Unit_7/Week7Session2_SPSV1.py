@@ -121,6 +121,16 @@ why you believe your solution has the stated time and space complexity.
 """
 def is_profitable(excursion_counts):
     if not excursion_counts:
+        return -1
+    n = len(excursion_counts)
+    left = 0
+    right = n - 1
+    while left <= right:
+        mid = left + (right-left) // 2
+        x = n - mid
+        if excursion_counts[mid] >= x:
+            if mid == 0 or excursion_counts[mid-1] < x:
+                return x
 
 print("--------Problem 4---------")
 print(is_profitable([3, 5]))
