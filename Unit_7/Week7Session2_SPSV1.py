@@ -131,7 +131,94 @@ def is_profitable(excursion_counts):
         if excursion_counts[mid] >= x:
             if mid == 0 or excursion_counts[mid-1] < x:
                 return x
+            right = mid - 1
+        else:
+            left = mid + 1
+    return -1
 
 print("--------Problem 4---------")
 print(is_profitable([3, 5]))
 print(is_profitable([0, 0]))
+print("Time Complexity: O(Log N)")
+print("Space Complexity: O(1)")
+
+"""
+Problem 5: Finding the Shallowest Point
+As the captain of the cruise ship, you need to take a detour to steer clear of an incoming storm. Given an array of integers 
+depths representing the varying water depths along your potential new route, write a function find_shallowest_point() 
+to help you decide whether the new route is deep enough for your ship. The function should use a divide-and-conquer approach 
+to return the shallowest point (minimum value) in depths. You may not use the built-in min() function.
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for 
+why you believe your solution has the stated time and space complexity.
+"""
+def find_shallowest_point(arr):
+    if not arr:
+        return 0
+    def find_min_subarray(left, right):
+        if left == right:
+            return arr[left]
+        mid = left + (right-left) // 2
+        left_min = find_min_subarray(left, mid)
+        right_min = find_min_subarray(mid+1, right)
+
+        return left_min if left_min < right_min else right_min
+    
+    return find_min_subarray(0, len(arr)-1)
+
+print("--------Problem 5---------")
+print(find_shallowest_point([5, 7, 2, 8, 3]))
+print(find_shallowest_point([12, 15, 10, 21]))
+print("Time Complexity: O(n)")
+print("Space Complexity: O(Log N)")
+
+"""
+Problem 6: Cruise Ship Treasure Hunt
+As a fun game, the cruise ship director has organized a treasure hunt for the kids on board and hidden a chest of candy in one of the rooms 
+on board. The rooms are organized in a m x n grid, where each row and each column are sorted in ascending order by room number. 
+Given an integer representing the room number where the prize is hidden treasure, use a divide and conquer approach 
+to return a tuple in the form (row, col) representing the row and column indices where treasure was found. 
+If treasure is not in the matrix, return (-1, -1).
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your 
+solution has the stated time and space complexity.
+"""
+# Brute Force Approach
+# def find_treasure(matrix, treasure):    
+#     if not matrix:
+#         return (-1, -1)
+#     rows = len(matrix)
+#     cols = len(matrix[0])
+#     for row in range(0,rows-1):
+#         for col in range(0, cols-1):
+#             if matrix[row][col] == treasure:
+#                 return ((row,col))
+#     return ((-1,-1))
+    
+# Divide and Conquer Approach
+def find_treasure(matrix, treasure):
+    if not matrix:
+        return (-1, -1)
+    rows = len(matrix)
+    cols = len(matrix[0])
+
+    row = 0
+    col = cols - 1
+    while row < rows and col >=0:
+        if matrix[row][col] == treasure:
+            return ((row,col))
+        elif matrix[row][col] > treasure:
+            col -= 1
+        else:
+            row += 1
+    return (-1, -1)
+print("--------Problem 6---------")
+rooms = [
+    [1, 4, 7, 11],
+    [8, 9, 10, 20],
+    [11, 12, 17, 30],
+    [18, 21, 23, 40]
+]
+
+print(find_treasure(rooms, 17))
+print(find_treasure(rooms, 5))
+print("Time Complexity: O(M+N)")
+print("Space Complexity: O(1)")
