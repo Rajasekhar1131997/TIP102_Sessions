@@ -336,8 +336,6 @@ def find_flower(root, flower):
     left_tree = find_flower(root.left, flower)
     right_tree = find_flower(root.right, flower)
     return left_tree or right_tree
-    
-
 
 print("--------Problem 8---------")
 """
