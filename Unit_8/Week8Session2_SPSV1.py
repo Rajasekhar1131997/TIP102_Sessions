@@ -248,11 +248,14 @@ class TreeNode:
 
 def sort_plants(collection):
     result = []
-    left_subtree = sort_plants(collection.left)
-    result.append((collection.left.key, collection.left.val))
-    result.append((collection.key, collection.val))
-    right_subtree = sort_plants(collection.right)
-    
+    def inorder_traversal(node):
+        if not node:
+            return #exits the function early
+        inorder_traversal(node.left)
+        result.append((node.val, node.key))
+        inorder_traversal(node.right)
+
+    inorder_traversal(collection)
     return result
 
 
@@ -270,3 +273,105 @@ values = [(3, "Monstera"), (1, "Pothos"), (5, "Witchcraft Orchid"), None, (2, "S
 collection = build_tree(values)
 
 print(sort_plants(collection))
+print("Time Complexity: O(N)")
+print("Space Complexity: O(N)")
+
+"""
+Problem 6: Finding a New Plant Within Budget
+You are looking for a new plant and have a max budget. The plant store that you are shopping at stores their inventory in a BST where 
+each node has a key representing the price of the plant and value cntains the plant's name. Plants are ordered by their prices. 
+You want to find a plant that is close to but lower than your budget.
+Given the root of the BST inventory and an integer budget, write a function pick_plant() that returns the plant with the highest price 
+below budget. If no plant with a price strictly below budget exists, the function should return None.
+"""
+class TreeNode:
+    def __init__(self, key, val, left=None, right=None):
+        self.key = key      # Plant price
+        self.val = val      # Plant name
+        self.left = left
+        self.right = right
+
+def pick_plant(root, budget):
+    closest = None
+    while root:
+        if root.val < budget:
+            closest = root
+            root = root.right
+        else:
+            root = root.left
+    return closest.key if closest else None
+
+print("--------Problem 6---------")
+"""
+               (50, "Fiddle Leaf Fig")
+             /                       \
+    (25, "Monstera")           (70, "Snake Plant")
+       /        \                   /         \
+(15, "Aloe")  (40, "Pothos")  (60, "Fern")  (80, "ZZ Plant")
+"""
+
+# Using build_tree() function at the top of page
+values = [(50, "Fiddle Leaf Fig"), (25, "Monstera"), (70, "Snake Plant"), (15, "Aloe"), 
+            (40, "Pothos"), (60, "Fern"), (80, "ZZ Plant")]
+inventory = build_tree(values)
+
+print(pick_plant(inventory, 50)) 
+print(pick_plant(inventory, 25)) 
+print(pick_plant(inventory, 15))
+print("Time Complexity: O(H), where H is the height of the tree, O(N) in the worst case if the tree is skewed. ")
+print("Space Complexity: O(1)")
+
+
+"""
+Problem 7: Remove Plant
+A plant in your houseplant collection has become infested with aphids, and unfortunately you need to throw it out. Given the root of a 
+BST collection where each node represents a plant in your collection, and a plant name, remove the plant node with value name from the 
+collection. Return the root of the modified collection. Plants are organized alphabetically in the tree by value.
+If the node with name has two children in the tree, replace it with its inorder predecessor (rightmost node in its left subtree). 
+You do not need to maintain a balanced tree. Pseudocode has been provided for you.
+Evaluate the time complexity of your function. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity. Assume the input tree is balanced when calculating time complexity.
+"""
+class TreeNode:
+    def __init__(self, value, left=None, right=None):
+        self.val = value
+        self.left = left
+        self.right = right
+
+def remove_plant(collection, name):
+    # Find the node to remove
+    # If the node has no children
+        # Remove the node by setting parent pointer to None
+    # If the node has one child
+        # Replace the node with its child
+    # If the node has two children
+        # Find the inorder predecessor 
+        # Replace the node's value with inorder predecessor value
+        # Remove inorder predecessor
+    # Return root of updated tree
+    if not collection:
+        return None
+    if name < collection.val:
+        collection.left = remove_plant(collection.left, name)
+    elif name > collection.val:
+        collection.right = remove_plant(collection.right, name)
+    else:
+        
+
+
+
+print("--------Problem 7---------")
+"""
+              Money Tree
+             /         \
+           Hoya        Pilea
+              \        /   \
+             Ivy    Orchid  ZZ Plant
+"""
+
+# Using build_tree() function at the top of page
+values = ["Money Tree", "Hoya", "Pilea", None, "Ivy", "Orchid", "ZZ Plant"]
+collection = build_tree(values)
+
+# Using print_tree() function at the top of page
+print_tree(remove_plant(collection, "Pilea"))
