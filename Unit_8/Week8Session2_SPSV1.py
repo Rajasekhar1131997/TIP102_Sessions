@@ -356,8 +356,6 @@ def remove_plant(collection, name):
     elif name > collection.val:
         collection.right = remove_plant(collection.right, name)
     else:
-        
-
 
 
 print("--------Problem 7---------")
