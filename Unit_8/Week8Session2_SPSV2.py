@@ -196,9 +196,34 @@ class TreeNode():
          self.val = value
          self.left = left
          self.right = right
-         
+
+def print_tree(root):
+    if root is None or not root:
+        return "Empty"
+    result = []
+    queue = deque([root])
+    while queue:
+        node = queue.popleft()
+        if node:
+            result.append(node.val)
+            queue.append(node.left)
+            queue.append(node.right)
+        else:
+            result.append(None)
+    while result and result[-1] is None:
+        result.pop()
+    print(result)         
+
 def add_treasure(grotto, new_item):
-    pass
+    if not grotto or grotto is None:
+        return TreeNode(new_item)
+    if grotto.val == new_item:
+        return grotto
+    if new_item < grotto.val:
+        grotto.left = add_treasure(grotto.left, new_item)
+    else:
+        grotto.right = add_treasure(grotto.right, new_item)
+    return grotto
 
 
 print("--------Problem 3---------")
@@ -215,4 +240,224 @@ values = ["Snarfblat", "Gadget", "Whatzit", "Dinglehopper", "Gizmo", "Whozit"]
 grotto = build_tree(values)
 
 # Using print_tree() function included at top of page
-print_tree(add_treasure(grotto, "Thingamabob")) 
+print_tree(add_treasure(grotto, "Thingamabob"))
+print("Time Complexity: O(H) where H is the height of the tree, O(log N) for the balanced BST, for insertion operation")
+print("Space Complexity: O(H) due to recursive call stack, in the worst case it will be O(N)")
+
+"""
+Problem 4: Sorting Pearls by Size
+You have a collection of pearls harvested from a local oyster bed. The pearls are organized by their size in a BST, where each node in 
+the BST represents the size of a pearl.
+A function smallest_to_largest_recursive() which takes in the BST root pearls and returns an array of pearl sizes sorted from smallest 
+to largest has been provided for you.
+Implement a new function smallest_to_largest_iterative() which provides a iterative solution, taking in the BST root pearls and returning 
+an array of pearl sizes sorted from smallest to largest has been provided for you.
+Evaluate the time complexity of your function. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity. Assume the input tree is balanced when calculating time complexity.
+"""
+class Pearl:
+    def __init__(self, size, left=None, right=None):
+        self.val = size
+        self.left = left
+        self.right = right
+
+def smallest_to_largest_recursive(pearls):
+    sorted_list = []
+    
+    def inorder_traversal(node):
+        if node:
+            inorder_traversal(node.left)   
+            sorted_list.append(node.val) 
+            inorder_traversal(node.right)  
+    
+    inorder_traversal(pearls)
+    return sorted_list
+
+def smallest_to_largest_iterative(pearls):
+    if not pearls:
+        return []
+    result = []
+    stack = []
+    current = pearls
+    while current or stack:
+        while current:
+            stack.append(current)
+            current = current.left
+        current = stack.pop()
+        result.append(current.val)
+        current = current.right
+    return result
+
+
+print("--------Problem 4---------")
+"""
+        3
+       / \
+      /   \ 
+     1     5
+      \   / \
+       2 4   8
+"""
+
+# Use build_tree() function at top of page
+values = [3, 1, 5, None, 2, 4, 8]
+pearls = build_tree(values)
+
+print(smallest_to_largest_recursive(pearls))
+print(smallest_to_largest_iterative(pearls))
+print("Time Complexity for recursive approach is O(N)")
+print("Space Complexity for recursive approach is O(H)")
+print("Time Complexity for Iterative Approach is O(N)")
+print("Space Complexity for Iterative Approach is O(H)")
+
+
+"""
+Problem 5: Smallest Pearl Above Minimum Size
+You have a collection of pearls stored in a BST where each node represents a pearl with size val. You are looking for a pearl to gift 
+the sea goddess, Yemaya. So as to not anger her, the pearl must be larger than min_size.
+Given the root of a BST pearls, write a function pick_pearl() that returns the pearl with the smallest size above min_size. 
+If no pearl with a size above min_size exists, the function should return None.
+Evaluate the time complexity of your function. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity. Assume the input tree is balanced when calculating time complexity.
+"""
+class Pearl:
+    def __init__(self, size, left=None, right=None):
+        self.val = size
+        self.left = left
+        self.right = right
+
+def pick_pearl(pearls, min_size):
+    gift = None
+    current = pearls
+    while current:
+        if current.val > min_size:
+            gift = current
+            current = current.left
+        else:
+            current = current.right
+    return gift.val if gift else None
+
+print("--------Problem 5---------")
+"""
+        3
+       / \
+      /   \ 
+     1     5
+      \   / \
+       2 4   8
+"""
+# Use build_tree() function at top of page
+values = [3, 1, 5, None, 2, 4, 8]
+pearls = build_tree(values)
+
+print(pick_pearl(pearls, 3))
+print(pick_pearl(pearls, 7))
+print(pick_pearl(pearls, 8))
+print("Time Complexity: O(H) and O(log N) for a balanced BST")
+print("Space Complexity: O(1)")
+
+"""
+Problem 6: Remove Invasive Species
+As a marine ecologist, you are worried about invasive species wreaking havoc on the local ecosystem. Given the root of a BST ecosystem 
+where each node represents a species in a marine ecosystem, and an invasive species name, remove the species with value name from the 
+ecosystem. Return the root of the modified ecosystem. Species are organized alphabetically in the tree by name (val).
+If the node with name has two children in the tree, replace it with its inorder successor (leftmost node in its right subtree). 
+You do not need to maintain a balanced tree. Pseudocode has been provided for you.
+Evaluate the time complexity of your function. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity. Assume the input tree is balanced when calculating time complexity.
+"""
+class TreeNode:
+    def __init__(self, value, left=None, right=None):
+        self.val = value
+        self.left = left
+        self.right = right
+
+def remove_species(ecosystem, name):
+    # Find the node to remove
+    # If the node has no children
+        # Remove the node by setting parent pointer to None
+    # If the node has one child
+        # Replace the node with its child
+    # If the node has two children
+        # Find the inorder successor
+        # Replace the node's value with inorder successor value
+        # Remove inorder successor
+    # Return root of updated tree
+    if not ecosystem:
+        return None
+    if name < ecosystem.val:
+        ecosystem.left = remove_species(ecosystem.left,name)
+    elif name > ecosystem.val:
+        ecosystem.right = remove_species(ecosystem.right, name)
+    else:
+        if not ecosystem.left:
+            return ecosystem.right
+        elif not ecosystem.right:
+            return ecosystem.left
+        else:
+            successor = min_val_node(ecosystem.left)
+            ecosystem.val = successor.val
+            ecosystem.left = remove_species(ecosystem.left,successor.val)
+    return ecosystem
+
+def min_val_node(node):
+    if not node:
+        return None
+    current = node
+    while current.left:
+        current = current.left
+    return current
+
+
+print("--------Problem 6---------")
+"""
+                Dugong
+             /         \
+       Brain Coral   Lionfish
+              \       /       \
+         Clownfish Giant Clam  Seagrass
+"""
+# Use build_tree() function at top of page
+values = ["Dugong", "Brain Coral", "Lionfish", None, "Clownfish", "Giant Clam", "Seagrass"]
+ecosystem = build_tree(values)
+
+# Using print_tree() function at top of page
+print_tree(remove_species(ecosystem, "Lionfish"))
+print("Time Complexity: O(H)")
+print("Space Complexity: O(H)")
+
+
+"""
+Problem 7: Minimum Difference in Pearl Size
+You are analyzing your collection of pearls stored in a BST where each node represents a pearl with a specific size (val). 
+You want to see if you have two pearls of similar size that you can make into a pair of earrings.
+Write a function min_diff_in_pearl_sizes() that acceps the root of a BST pearls, and returns the minimum difference between the sizes of 
+any two different pearls in the collection.
+Evaluate the time complexity of your function. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity. Assume the input tree is balanced when calculating time complexity.
+"""
+
+class Pearl:
+    def __init__(self, size=0, left=None, right=None):
+        self.val = size
+        self.left = left
+        self.right = right
+
+def min_diff_in_pearl_sizes(pearls):
+    if not pearls:
+        return None
+
+
+print("--------Problem 7---------")
+"""
+        4
+       / \
+      2   6
+     / \   \
+    1   3   8
+"""
+# Use build_tree() function at top of page
+values = [4, 2, 6, 1, 3, None, 8]
+pearls = build_tree(values)
+
+print(min_diff_in_pearl_sizes(pearls))  
