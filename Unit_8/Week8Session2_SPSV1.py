@@ -356,6 +356,25 @@ def remove_plant(collection, name):
     elif name > collection.val:
         collection.right = remove_plant(collection.right, name)
     else:
+        if collection is None and collection.right is None:
+            return None
+        if collection.left is None:
+            return collection.right
+        if collection.right is None:
+            return collection.left
+        predecessor = max_value_node(collection.left)
+        collection.val = predecessor.val
+        collection.left = remove_plant(collection.left,predecessor.val)
+
+    return collection
+
+def max_value_node(node):
+    if not node:
+        return None
+    current = node
+    while current.right:
+        current = current.right
+    return current
 
 
 print("--------Problem 7---------")
@@ -373,3 +392,5 @@ collection = build_tree(values)
 
 # Using print_tree() function at the top of page
 print_tree(remove_plant(collection, "Pilea"))
+print("Time Complexity: O(H), H is the height of the tree, O(log N) in worst case and if it's a balanced BST")
+print("Space Complexity: O(H), due to recursive call stack, O(N) in the worst case")
