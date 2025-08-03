@@ -337,3 +337,40 @@ among any rooms in the entire hotel. The subtree of a room is a tree consisting 
 Evaluate the time complexity of your function. Define your variables and provide a rationale for 
 why you believe your solution has the stated time complexity.
 """
+class TreeNode():
+     def __init__(self, value, left=None, right=None):
+        self.val = value
+        self.left = left
+        self.right = right
+
+def smallest_subtree_with_deepest_rooms(hotel):
+    pass
+
+
+"""
+         Lobby
+        /     \
+       /       \
+      101      102
+     /   \    /   \
+   201  202  203  204
+        /  \ 
+      😱   👻
+"""
+# Using build_tree() included at top of page
+rooms = ["Lobby", 101, 102, 201, 202, 203, 204, None, None, "😱", "👻"]
+hotel1 = build_tree(rooms)
+
+"""
+      Lobby
+     /     \
+   101     102
+     \
+     💀
+"""
+rooms = ["Lobby", 101, 102, None, "💀"]
+hotel2 = build_tree(rooms)
+
+# Using print_tree() function included at top of page
+print_tree(smallest_subtree_with_deepest_rooms(hotel1))
+print_tree(smallest_subtree_with_deepest_rooms(hotel2))
