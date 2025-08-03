@@ -114,11 +114,42 @@ class TreeNode:
         self.left = left
         self.right = right
 
+# Using DFS Approach:
 def max_pumpkins_path(root):
     if not root:
-        return None
+        return []
+    left_path = max_pumpkins_path(root.left)
+    right_path = max_pumpkins_path(root.right)
+
+    if sum([root.val] + left_path) > sum([root.val] + right_path):
+        return [root.val] + left_path
+    else:
+        return [root.val] + right_path
+
+#Using BFS Approach:
+def max_pumpkins_path(root):
+    if not root:
+        return []
+    max_sum = float('-inf')
+    max_path = []
+    queue = deque()
+    queue.append((root, [root.val], root.val))
+    while queue:
+        node, path, total = queue.popleft()
+
+        if not node.left and not node.right:
+            if total > max_sum:
+                max_sum = total
+                max_path = path
+        else:
+            if node.left:
+                queue.append((node.left, path + [node.left.val], node.left.val))
+            if node.right:
+                queue.append((node.right, path +[node.right.val], node.right.val))
+    return max_path
 
 print("--------Problem 2---------")
+
 """
     7
    / \
@@ -142,6 +173,8 @@ root2 = build_tree(pumpkin_quantities)
 
 print(max_pumpkins_path(root1))
 print(max_pumpkins_path(root2))
+print("Time Complexity using DFS Approach: O(N)")
+print("Space Complexity using DFS Approach: O(N)")
 
 """
 Problem 3: Largest Pumpkin in each Row
@@ -206,7 +239,16 @@ class TreeNode:
         self.right = right
 
 def count_clusters(hotel):
-    pass
+    def dfs(node,parent_val):
+        if not node:
+            return 0
+        count = 1 if node.val != parent_val else 0
+
+        count += dfs(node.left, node.val)
+        count += dfs(node.right, node.val)
+        
+        return count
+    return dfs(hotel, None)
 
 print("--------Problem 4---------")
 """
@@ -220,4 +262,78 @@ print("--------Problem 4---------")
 themes = ["👻", "👻", "🧛🏾", "👻", "🧛🏾", None, "🧛🏾"]
 hotel = build_tree(themes)
 
-print(count_clusters(themes))
+print(count_clusters(hotel))
+print("Time Complexity: O(N)")
+print("Space Complexity: O(N)")
+
+"""
+Problem 5: Purging Unwanted Guests
+There are unwanted visitors lurking in the rooms of your haunted hotel, and it's time for a clear out. Given the root of a binary tree 
+hotel where each node represents a room in the hotel and each node value represents the guest staying in that room. 
+You want to systematically remove visitors in the following order:
+Collect the guests (values) of all leaf nodes and store them in a list. The leaf nodes may be stored in any order.
+Remove all the leaf nodes.
+Repeat until the hotel (tree) is empty.
+Return a list of lists, where each inner list represents a collection of leaf nodes.
+Evaluate the time complexity of your function. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity.
+"""
+class TreeNode():
+     def __init__(self, value, left=None, right=None):
+        self.val = value
+        self.left = left
+        self.right = right
+
+def purge_hotel(hotel):
+    def collect_leaves(node, parent, is_left):
+        if not node:
+            return False
+        if not node.left and not node.right:
+            leaves.append(node.val)
+            if parent:
+                if is_left:
+                    parent.left = None
+                else:
+                    parent.right = None
+            return True
+        collect_leaves(node.left, node, True)
+        collect_leaves(node.right, node, False)
+        return False
+    result = []
+    while hotel:
+        leaves = []
+        if collect_leaves(hotel, None, False):
+            hotel = None
+        result.append(leaves)
+    return result
+
+print("--------Problem 5---------")
+"""
+      👻
+     /  \
+   😱   🧛🏾‍♀️
+  /  \
+ 💀  😈
+"""
+
+# Using build_tree() function included at the top of the page
+guests = [1, 2, 3, 4, 5]
+hotel = build_tree(guests)
+
+# Using print_tree() function included at the top of the page
+print_tree(hotel)
+print(purge_hotel(hotel))
+print("Time Complexity: O(N^2)")
+print("Space Complexity: O(N)")
+
+"""
+Problem 6: Sectioning Off Cursed Zones
+You've been hearing mysterious wailing and other haunting noises emanating from the deepest depths of the hotel. To keep guests safe, 
+you want to section off the deepest parts of the hotel but keep as much of the hotel open as possible.
+Given the root of a binary tree hotel where each node represents a room in the hotel, return the root of the smallest subtree in the 
+hotel such that it contains all the deepesnt nodes of the original tree.
+The depth of a room (node) is the shortest distance from it to the root. A room is called the deepest if it has the largest depth possible 
+among any rooms in the entire hotel. The subtree of a room is a tree consisting of that room, plus the set of all its descendants.
+Evaluate the time complexity of your function. Define your variables and provide a rationale for 
+why you believe your solution has the stated time complexity.
+"""
