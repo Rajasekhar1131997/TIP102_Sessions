@@ -239,10 +239,29 @@ you will visit them. Assume that departure is scheduled from every airport excep
 (i.e., there are no cycles in the route).
 """
 def find_itinerary(boarding_passes):
+    #edge case if the provided list is empty, return empty list
     if not boarding_passes:
         return []
+    # initializing empty dictionary
+    flight_map = {}
+    arrivals = set()
+    # Loop through each value in the list and add them to the dictionary
+    for departure, arrival in boarding_passes:
+        flight_map[departure] = arrival
+        arrivals.add(arrival)
+    # finding the starting departure
+    start = None
+    for departure, arrival in boarding_passes:
+        if departure not in arrivals:
+            start = departure
+            break
+    # initializing an empty list to add the destinations from start to final
+    itinerary = []
+    while start:
+        itinerary.append(start)
+        start = flight_map.get(start)
     
-
+    return itinerary
 
 print("--------Problem 8---------")
 boarding_passes_1 = [
@@ -259,3 +278,5 @@ boarding_passes_2 = [
 
 print(find_itinerary(boarding_passes_1))
 print(find_itinerary(boarding_passes_2))
+print("Time Complexity: O(N)")
+print("Space Complexity: O(N)")
