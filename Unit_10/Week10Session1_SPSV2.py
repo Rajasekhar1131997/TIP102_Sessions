@@ -247,6 +247,7 @@ def have_connection(celebs, start_celeb, target_celeb):
             if connected == 1 and neighbor not in visited:
                 if dfs(neighbor):
                     return True
+        return False
     return dfs(start_celeb)
 
 
