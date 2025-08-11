@@ -111,6 +111,24 @@ with ID j. Otherwise, matrix[i][j] should have value 0. Return both the dictiona
 def get_adj_matrix(clients):
     if not clients:
         return {}, []
+    unique_celebs = set()
+    for pair in clients:
+        unique_celebs.update(pair)
+
+    celeb_to_ids = {}
+    for index, celebrity in enumerate(unique_celebs):
+        celeb_to_ids[celebrity] = index
+    
+    n = len(celeb_to_ids)
+    adj_matrix = [[0] * n for _ in range(n)]
+
+    for celeb_a, celeb_b in clients:
+        id_a = celeb_to_ids[celeb_a]
+        id_b = celeb_to_ids[celeb_b]
+        adj_matrix[id_a][id_b] = 1
+        adj_matrix[id_b][id_a] = 1
+    
+    return celeb_to_ids, adj_matrix
 
 print("--------Problem 4---------")
 clients = [
@@ -125,3 +143,193 @@ clients = [
 id_map, adj_matrix = get_adj_matrix(clients)
 print(id_map)
 print(adj_matrix)
+print("Time Complexity: O(N)")
+print("Space Complexity: O(N^2) for storing adjacency matrix and O(N) for mapping dictionary")
+
+"""
+Problem 5: Secret Celebrity
+A new reality show is airing in which a famous celebrity pretends to be a non-famous person. As contestants get to know each other, 
+they have to guess who the celebrity among them is to win the show. An even bigger twist: there might be no celebrity at all! 
+The show has n contestants labeled from 1 to n.
+If the celebrity exists, then:
+The celebrity trusts none of the contestants.
+Due to the celebrity's charisma, all the contestants trust the celebrity.
+There is exactly one person who satisfies rules 1 and 2.
+You are given an array trust where trust[i] = [a, b] indicates that contestant a trusts contestant b. If a trust relationship does not exist 
+in trust array, then such a trust relationship does not exist.
+Return the label of the celebrity if they exist and can be identified. Otherwise, return -1.
+"""
+def identify_celebrity(trust, n):
+    trust_count = [0] * (n+1)
+    trusted_by = [0] * (n+1)
+
+    for a, b in trust:
+        trust_count[b] += 1
+        trusted_by[a] += 1
+
+    for i in range(1, n+1):
+        if trust_count[i] == n-1 and trusted_by[i] == 0:
+            return i
+    
+    return -1
+
+print("--------Problem 5---------")
+trust1 = [[1,2]]
+trust2 = [[1,3],[2,3]]
+trust3 = [[1,3],[2,3],[3,1]]
+
+print(identify_celebrity(trust1, 2))
+print(identify_celebrity(trust2, 3))
+print(identify_celebrity(trust3, 3))
+print("Time Complexity: O(N+T)")
+print("Space Complexity: O(N)")
+
+"""
+Problem 6: Casting Call Search
+You are a casting agent for a major Hollywood production and the director has a certain celebrity in mind for the lead role. You have an 
+adjacency matrix celebs where celebs[i][j] = 1 means that celebrity i has a connection with celebrity j, and celebs[i][j] = 0 means they don't. 
+Connections are directed meaning that celebs[i][j] = 1 does not automatically mean celebs[j][i] = 1.
+Given a celebrity you know start_celeb and the celebrity the director wants to hire target_celeb, use Breadth First Search to return True 
+if you can find a path of connections from start_celeb to target_celeb. Otherwise, return False.
+"""
+from collections import deque
+def have_connection(celebs, start_celeb, target_celeb):
+    n = len(celebs)
+    queue = deque([start_celeb])
+    visited = set([start_celeb])
+
+    while queue:
+        current = queue.popleft()
+
+        if current == target_celeb:
+            return True
+        
+        for neighbor in range(n):
+            if celebs[current][neighbor] == 1 and neighbor not in visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
+    
+    return False
+
+print("--------Problem 6---------")
+celebs = [
+            [0, 1, 0, 0, 0, 0, 0, 0], # Celeb 0
+            [0, 1, 1, 0, 0, 0, 0, 0], # Celeb 1
+            [0, 0, 0, 1, 0, 1, 0, 0], # Celeb 2
+            [0, 0, 0, 0, 1, 0, 1, 0], # Celeb 3
+            [0, 0, 0, 1, 0, 0, 0, 1], # Celeb 4
+            [0, 1, 0, 0, 0, 0, 0, 0], # Celeb 5
+            [0, 0, 0, 1, 0, 0, 0, 1], # Celeb 6
+            [0, 0, 0, 0, 1, 0, 1, 0]  # Celeb 7
+            ]
+
+print(have_connection(celebs, 0, 6))
+print(have_connection(celebs, 3, 5))
+print("Time Complexity: O(N^2)")
+print("Space Complexity: O(N)")
+
+"""
+Problem 7: Casting Call Search II
+You are a casting agent for a major Hollywood production and the director has a certain celebrity in mind for the lead role. You have an 
+adjacency matrix celebs where celebs[i][j] = 1 means that celebrity i has a connection with celebrity j, and celebs[i][j] = 0 means they don't. 
+Connections are directed meaning that celebs[i][j] = 1 does not automatically mean celebs[j][i] = 1.
+Given a celebrity you know start_celeb and the celebrity the director wants to hire target_celeb, use Depth First Search to return True if 
+you can find a path of connections from start_celeb to target_celeb. Otherwise, return False.
+"""
+def have_connection(celebs, start_celeb, target_celeb):
+    visited = set()
+
+    def dfs(current):
+        if current == target_celeb:
+            return True
+        visited.add(current)
+        for neighbor, connected in enumerate(celebs[current]):
+            if connected == 1 and neighbor not in visited:
+                if dfs(neighbor):
+                    return True
+    return dfs(start_celeb)
+
+
+print("--------Problem 7---------")
+celebs = [
+            [0, 1, 0, 0, 0, 0, 0, 0], # Celeb 0
+            [0, 1, 1, 0, 0, 0, 0, 0], # Celeb 1
+            [0, 0, 0, 1, 0, 1, 0, 0], # Celeb 2
+            [0, 0, 0, 0, 1, 0, 1, 0], # Celeb 3
+            [0, 0, 0, 1, 0, 0, 0, 1], # Celeb 4
+            [0, 1, 0, 0, 0, 0, 0, 0], # Celeb 5
+            [0, 0, 0, 1, 0, 0, 0, 1], # Celeb 6
+            [0, 0, 0, 0, 1, 0, 1, 0]  # Celeb 7
+            ]
+
+print(have_connection(celebs, 0, 6))
+print(have_connection(celebs, 3, 5))
+print("Time Complexity: O(N^2)")
+print("Space Complexity: O(N)")
+
+"""
+Problem 8: Copying Seating Arrangements
+You are organizing the seating arrangement for a big awards ceremony and want to make a copy for your assistant. The seating arrangement is 
+stored in a graph where each Node value val is the name of a celebrity guest at the ceremony and its array neighbors are all the guests 
+sitting in seats adjacent to the celebrity. Given a reference to a Node in the original seating arrangement seat, make a deep copy (clone) 
+of the seating arrangement. Return the copy of the given node. We have provided a function compare_graphs() to help with testing this function. 
+To use this function, pass in the given node seat and the copy of that node your function copy_seating() returns. If the two graphs are 
+clones of each other, the function will return True. Otherwise, the function will return False.
+"""
+class Node():
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+# Function to test if two seating arrangements (graphs) are identical
+def compare_graphs(node1, node2, visited=None):
+    if visited is None:
+        visited = set()
+    
+    if node1.val != node2.val:
+        return False
+    
+    visited.add(node1)
+
+    if len(node1.neighbors) != len(node2.neighbors):
+        return False
+    
+    for n1, n2 in zip(node1.neighbors, node2.neighbors):
+        if n1 not in visited and not compare_graphs(n1, n2, visited):
+            return False
+
+    return True
+
+def copy_seating(seat):
+    old_to_new = {}
+
+    def dfs(node):
+        if node is None:
+            return None
+        if node in old_to_new:
+            return old_to_new[node]
+        
+        copy = Node(node.val)
+        old_to_new[node] = copy
+
+        for neighbor in node.neighbors:
+            copy.neighbors.append(dfs(neighbor))
+        
+        return copy
+    
+    return dfs(seat)
+
+print("--------Problem 8---------")
+lily = Node("Lily Gladstone")
+mark = Node("Mark Ruffalo")
+cillian = Node("Cillian Murphy")
+danielle = Node("Danielle Brooks")
+lily.neighbors.extend([mark, danielle])
+mark.neighbors.extend([lily, cillian])
+cillian.neighbors.extend([danielle, mark])
+danielle.neighbors.extend([lily, cillian])
+
+copy = copy_seating(lily)
+print(compare_graphs(lily, copy))
+print("Time Complexity: O(N)")
+print("Space Complexity: O(N)")
